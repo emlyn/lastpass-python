@@ -170,7 +170,7 @@ class Parser(object):
             {'name' :'name','encoding' :'aes256'},
             {'name' :'group','encoding' :'aes256'},
             {'name' :'url','encoding' :'hex'},
-            {'name' :'extra'},
+            {'name' :'extra','encoding' :'aes256'},
             {'name' :'favorite'},
             {'name' :'shared_from_id'},
             {'name' :'username','encoding' :'aes256'},
