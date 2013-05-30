@@ -8,8 +8,8 @@ from xml.etree import ElementTree as etree
 
 class Fetcher(object):
     @classmethod
-    def fetch(cls, username, password, iterations=1):
-        fetcher = cls(username, password, iterations)
+    def fetch(cls, username, password, iterations=1, otp=None):
+        fetcher = cls(username, password, iterations, otp)
         fetcher._fetch()
 
         return fetcher
@@ -33,10 +33,11 @@ class Fetcher(object):
                 32,
                 hashlib.sha256)
 
-    def __init__(self, username, password, iterations):
+    def __init__(self, username, password, iterations, otp):
         self.username = username
         self.password = password
         self.iterations = iterations
+        self.otp = otp
 
     def _fetch(self):
         self.blob = self._fetch_blob(self._login())
@@ -44,11 +45,12 @@ class Fetcher(object):
     def _login(self):
         self.encryption_key = Fetcher.make_key(self.username, self.password, self.iterations)
         options = {
-            'method': 'mobile',
+            'method': 'mobile', # or 'web'
             'xml': 1,
             'username': self.username,
             'hash': self.make_hash(self.username, self.password, self.iterations),
             'iterations': self.iterations,
+            'otp': self.otp,
         }
 
         url = 'https://lastpass.com/login.php'
